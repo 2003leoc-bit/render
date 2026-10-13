@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urban Longevity Lab - Pianta Esatta 3D</title>
+    <title>Urban Longevity Lab - 3D Definitivo</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -23,13 +23,13 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(15, 23, 42, 0.92);
+            background: rgba(15, 23, 42, 0.94);
             backdrop-filter: blur(16px);
             padding: 18px 22px;
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 0 16px 36px rgba(0,0,0,0.6);
-            max-width: 350px;
+            max-width: 340px;
             z-index: 100;
         }
         h1 {
@@ -40,14 +40,14 @@
         }
         .dim-badge {
             display: inline-block;
-            background: rgba(14, 165, 233, 0.18);
+            background: rgba(14, 165, 233, 0.2);
             color: #38BDF8;
             font-size: 11px;
             font-weight: 700;
             padding: 3px 8px;
             border-radius: 6px;
             margin-bottom: 12px;
-            border: 1px solid rgba(14, 165, 233, 0.35);
+            border: 1px solid rgba(14, 165, 233, 0.4);
         }
         .btn-group {
             display: grid;
@@ -77,13 +77,13 @@
         }
         .action-btn {
             width: 100%;
-            background: rgba(217, 119, 6, 0.18);
+            background: rgba(217, 119, 6, 0.2);
             color: #FBBF24;
             border: 1px solid rgba(245, 158, 11, 0.4);
             margin-top: 4px;
         }
         .action-btn:hover {
-            background: rgba(217, 119, 6, 0.35);
+            background: rgba(217, 119, 6, 0.4);
             color: #FFFFFF;
         }
         #labels-overlay {
@@ -98,14 +98,14 @@
         }
         .tag-3d {
             position: absolute;
-            background: rgba(15, 23, 42, 0.90);
+            background: rgba(15, 23, 42, 0.92);
             color: #F8FAFC;
-            padding: 4px 9px;
+            padding: 4px 10px;
             border-radius: 6px;
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 700;
-            border: 1px solid rgba(255,255,255,0.22);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.6);
             transform: translate(-50%, -50%);
             white-space: nowrap;
             display: flex;
@@ -122,15 +122,15 @@
             position: absolute;
             bottom: 20px;
             right: 20px;
-            background: rgba(15, 23, 42, 0.90);
-            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.94);
+            padding: 10px 16px;
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.15);
             font-size: 11px;
             font-weight: 700;
             color: #94A3B8;
             display: flex;
-            gap: 14px;
+            gap: 16px;
             z-index: 100;
         }
         #compass span b { color: #38BDF8; }
@@ -141,20 +141,20 @@
 <body>
     <div id="control-panel">
         <h1>URBAN LONGEVITY LAB</h1>
-        <div class="dim-badge">3,50 m (Fondo) x 4,00 m (Lato)</div>
+        <div class="dim-badge">3,50 m x 4,00 m (Mura Corrette)</div>
         <div class="btn-group">
-            <button onclick="changeView('front_iso')" class="active">Vista Frontale 3D</button>
-            <button onclick="changeView('top')">Pianta 2D Alto</button>
+            <button onclick="changeView('front')" class="active">Vista Frontale</button>
+            <button onclick="changeView('top')">Pianta 2D</button>
             <button onclick="changeView('entrance')">Dall'Ingresso</button>
-            <button onclick="changeView('scale')">Vista Scala</button>
+            <button onclick="changeView('scale')">Dalle Scale</button>
         </div>
-        <button class="action-btn" onclick="toggleCutaway()">Muri Pieni / Aperti</button>
+        <button class="action-btn" onclick="toggleCutaway()">Alza / Abbassa Muri</button>
     </div>
 
     <div id="compass">
-        <span>SINISTRA: <b>Scale + Bagno</b></span>
+        <span>SINISTRA: <b>Bagno + Scala</b></span>
         <span>CENTRO: <b>Unghie</b></span>
-        <span>DESTRA: <b>Porta + Reception + Cabina</b></span>
+        <span>DESTRA: <b>Ingresso + Reception + Cabina</b></span>
     </div>
 
     <div id="labels-overlay"></div>
@@ -179,20 +179,15 @@
         controls.minDistance = 2;
         controls.maxDistance = 18;
 
-        const ambLight = new THREE.AmbientLight(0xFFFBF2, 0.9);
+        const ambLight = new THREE.AmbientLight(0xFFFBF2, 0.95);
         scene.add(ambLight);
 
-        const sun = new THREE.DirectionalLight(0xFFF3D6, 1.3);
-        sun.position.set(-4, 12, -8);
+        const sun = new THREE.DirectionalLight(0xFFF3D6, 1.4);
+        sun.position.set(0, 12, 10);
         sun.castShadow = true;
         sun.shadow.mapSize.width = 2048;
         sun.shadow.mapSize.height = 2048;
-        sun.shadow.bias = -0.0004;
         scene.add(sun);
-
-        const softLight = new THREE.PointLight(0xFFD8A8, 0.7, 8);
-        softLight.position.set(0, 2.5, 0);
-        scene.add(softLight);
 
         const matFloor = new THREE.MeshStandardMaterial({ color: 0xE2DDD5, roughness: 0.6, metalness: 0.05 });
         const matWallHigh = new THREE.MeshStandardMaterial({ color: 0xECE6DC, roughness: 0.9 });
@@ -227,78 +222,82 @@
         // Pavimento (3,5m x 4,0m)
         addBox(W, 0.08, D, matFloor, 0, -0.04, 0);
 
-        // Pareti di fondo e perimetrali
-        addBox(W, H_FULL, 0.12, matWallHigh, 0, H_FULL/2, 2.0, 0, 0, 0, true);
+        // Muro Fondo (Z = -2.0, in alto sullo schermo)
+        addBox(W, H_FULL, 0.12, matWallHigh, 0, H_FULL/2, -2.0, 0, 0, 0, true);
+        // Muro Sinistro (X = -1.75, a sinistra dello schermo)
         addBox(0.12, H_FULL, D, matWallHigh, -1.75, H_FULL/2, 0, 0, 0, 0, true);
+        // Muro Destro (X = +1.75, a destra dello schermo)
         addBox(0.12, H_CUT, D, matWallLow, 1.75, H_CUT/2, 0);
 
-        // Fronte strada
-        addBox(1.05, H_CUT, 0.1, matWallLow, -1.22, H_CUT/2, -2.0);
-        addBox(1.4, 0.08, 0.08, matMetal, 0, 0.04, -2.0);
-        addBox(1.4, 2.4, 0.03, matGlass, 0, 1.24, -2.0);
-        // Porta ingresso a DESTRA
-        addBox(0.95, 2.4, 0.04, matGlass, 1.2, 1.24, -1.7, 0, -0.45, 0);
-        addBox(0.04, 2.4, 0.06, matMetal, 1.2, 1.24, -1.7, 0, -0.45, 0);
+        // FRONTE STRADA (Z = +2.0, in basso sullo schermo):
+        // Muro davanti al Bagno a SINISTRA
+        addBox(1.05, H_CUT, 0.1, matWallLow, -1.22, H_CUT/2, 2.0);
+        // Vetrina centrale
+        addBox(1.4, 0.08, 0.08, matMetal, 0, 0.04, 2.0);
+        addBox(1.4, 2.4, 0.03, matGlass, 0, 1.24, 2.0);
+        // PORTA D'INGRESSO A DESTRA
+        addBox(0.95, 2.4, 0.04, matGlass, 1.2, 1.24, 1.7, 0, 0.45, 0);
+        addBox(0.04, 2.4, 0.06, matMetal, 1.2, 1.24, 1.7, 0, 0.45, 0);
 
-        // Blocco Sinistro: Bagno, Antibagno e Scala
+        // BLOCCO SINISTRO (Bagno, Antibagno, Scala)
         const leftSepX = -0.70;
 
         // Bagno in basso a sinistra
-        addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, -1.15);
-        addBox(0.08, H_CUT, 0.85, matWallLow, leftSepX, H_CUT/2, -1.57);
-        addBox(0.38, 0.40, 0.48, matCushion, -1.22, 0.20, -1.65);
+        addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, 1.15);
+        addBox(0.08, H_CUT, 0.85, matWallLow, leftSepX, H_CUT/2, 1.57);
+        addBox(0.38, 0.40, 0.48, matCushion, -1.22, 0.20, 1.65);
 
-        // Antibagno con porta scorrevole
-        addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, -0.35);
-        addBox(0.08, H_CUT, 0.25, matWallLow, leftSepX, H_CUT/2, -0.47);
-        addBox(0.03, 0.05, 1.0, matMetal, leftSepX + 0.05, 2.1, -0.85);
-        addBox(0.04, 2.05, 0.75, matWoodOak, leftSepX + 0.05, 1.05, -0.90);
-        addBox(0.02, 0.25, 0.03, matMetal, leftSepX + 0.08, 1.05, -0.65);
-        addBox(0.48, 0.06, 0.36, matWoodOak, -1.22, 0.85, -0.75);
-        addBox(0.34, 0.14, 0.26, matCushion, -1.22, 0.95, -0.75);
+        // Antibagno subito sopra con porta scorrevole
+        addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, 0.35);
+        addBox(0.08, H_CUT, 0.25, matWallLow, leftSepX, H_CUT/2, 0.47);
+        addBox(0.03, 0.05, 1.0, matMetal, leftSepX + 0.05, 2.1, 0.85);
+        addBox(0.04, 2.05, 0.75, matWoodOak, leftSepX + 0.05, 1.05, 0.90);
+        addBox(0.02, 0.25, 0.03, matMetal, leftSepX + 0.08, 1.05, 0.65);
+        addBox(0.48, 0.06, 0.36, matWoodOak, -1.22, 0.85, 0.75);
+        addBox(0.34, 0.14, 0.26, matCushion, -1.22, 0.95, 0.75);
 
-        // Scala a SINISTRA sopra l'antibagno (Accesso in alto a quota Z=+2.0, scende a Z=-0.35)
+        // Scala in alto a sinistra (Accesso in cima a Z=-2.0, scende verso il centro)
         const nSteps = 11;
         const stepLen = 1.90 / nSteps;
         for (let i = 0; i < nSteps; i++) {
-            const stepZ = 1.55 - (i * stepLen);
+            const stepZ = -1.55 + (i * stepLen);
             const stepY = - (i * 0.14);
             addBox(0.95, 0.14, stepLen, matStep, -1.22, stepY, stepZ);
         }
-        addBox(0.95, 0.10, 0.45, matFloor, -1.22, 0, 1.77);
-        addBox(0.04, 0.95, 2.0, matMetal, leftSepX, 0.47, 0.65);
+        addBox(0.95, 0.10, 0.45, matFloor, -1.22, 0, -1.77);
+        addBox(0.04, 0.95, 2.0, matMetal, leftSepX, 0.47, -0.65);
 
-        // Postazione unghie centrale compatta
-        addBox(0.45, 0.75, 0.85, matWoodOak, -0.05, 0.375, -0.95);
-        addBox(0.14, 0.005, 0.18, matMetal, -0.05, 0.755, -0.95);
-        addBox(0.32, 0.70, 0.32, matCushion, -0.42, 0.35, -0.95);
-        addBox(0.32, 0.70, 0.32, matCushion, +0.32, 0.35, -0.95);
+        // Tavolo Unghie compatto al centro
+        addBox(0.45, 0.75, 0.85, matWoodOak, -0.05, 0.375, 0.95);
+        addBox(0.14, 0.005, 0.18, matMetal, -0.05, 0.755, 0.95);
+        addBox(0.32, 0.70, 0.32, matCushion, -0.42, 0.35, 0.95);
+        addBox(0.32, 0.70, 0.32, matCushion, +0.32, 0.35, 0.95);
 
-        // Reception ORIZZONTALE a parete destra
-        addBox(1.05, 1.05, 0.45, matWoodOak, 1.15, 0.525, 0.15);
-        addBox(1.09, 0.04, 0.49, matWoodDark, 1.15, 1.07, 0.15);
-        addBox(0.18, 0.14, 0.12, matMetal, 1.15, 1.18, 0.15, 0, 0, 0);
+        // Reception ORIZZONTALE a destra
+        addBox(1.05, 1.05, 0.45, matWoodOak, 1.15, 0.525, -0.15);
+        addBox(1.09, 0.04, 0.49, matWoodDark, 1.15, 1.07, -0.15);
+        addBox(0.18, 0.14, 0.12, matMetal, 1.15, 1.18, -0.15);
 
-        // Cabina Trattamenti in alto a destra DIETRO LA RECEPTION
+        // Cabina in alto a destra (DIETRO LA RECEPTION)
         const cabSepX = -0.05;
-        const cabFrontZ = 0.65;
-        addBox(0.08, H_CUT, 1.35, matWallLow, cabSepX, H_CUT/2, 1.32);
+        const cabFrontZ = -0.65;
+        addBox(0.08, H_CUT, 1.35, matWallLow, cabSepX, H_CUT/2, -1.32);
         addBox(1.80, H_CUT, 0.08, matWallLow, 0.85, H_CUT/2, cabFrontZ);
-        addBox(0.65, 2.15, 0.04, matWoodOak, 0.40, 1.08, 0.85, 0, 0.75, 0);
-        addBox(0.68, 0.35, 1.60, matWoodDark, 1.10, 0.18, 1.25);
-        addBox(0.72, 0.30, 1.65, matCushion, 1.10, 0.45, 1.25);
-        addBox(0.40, 0.05, 0.32, matWoodOak, cabSepX + 0.32, 0.82, 0.90);
-        addBox(0.28, 0.12, 0.22, matCushion, cabSepX + 0.32, 0.90, 0.90);
+        addBox(0.65, 2.15, 0.04, matWoodOak, 0.40, 1.08, -0.85, 0, -0.75, 0);
+        addBox(0.68, 0.35, 1.60, matWoodDark, 1.10, 0.18, -1.25);
+        addBox(0.72, 0.30, 1.65, matCushion, 1.10, 0.45, -1.25);
+        addBox(0.40, 0.05, 0.32, matWoodOak, cabSepX + 0.32, 0.82, -0.90);
+        addBox(0.28, 0.12, 0.22, matCushion, cabSepX + 0.32, 0.90, -0.90);
 
-        // Etichette fluttuanti 3D
+        // Etichette fluttuanti 3D con posizioni sincronizzate
         const tagsData = [
-            { text: "INGRESSO A DESTRA", pos: new THREE.Vector3(1.2, 1.8, -1.9), color: "#10B981" },
-            { text: "BAGNO (In Basso a Sx)", pos: new THREE.Vector3(-1.22, 0.9, -1.65), color: "#38BDF8" },
-            { text: "ANTIBAGNO (Porta Scorrevole)", pos: new THREE.Vector3(-1.22, 1.4, -0.75), color: "#F59E0B" },
-            { text: "ACCESSO SCALA (In Alto a Sx)", pos: new THREE.Vector3(-1.22, 1.2, 1.77), color: "#EF4444" },
-            { text: "UNGHIE COMPATTO", pos: new THREE.Vector3(-0.05, 1.0, -0.95), color: "#F59E0B" },
-            { text: "RECEPTION ORIZZONTALE", pos: new THREE.Vector3(1.15, 1.4, 0.15), color: "#8B5CF6" },
-            { text: "CABINA (Dietro Reception)", pos: new THREE.Vector3(1.10, 1.4, 1.25), color: "#10B981" }
+            { text: "INGRESSO (A Destra)", pos: new THREE.Vector3(1.2, 1.8, 1.9), color: "#10B981" },
+            { text: "BAGNO (In Basso a Sx)", pos: new THREE.Vector3(-1.22, 0.9, 1.65), color: "#38BDF8" },
+            { text: "ANTIBAGNO (Porta Scorrevole)", pos: new THREE.Vector3(-1.22, 1.4, 0.75), color: "#F59E0B" },
+            { text: "ACCESSO SCALA (In Alto a Sx)", pos: new THREE.Vector3(-1.22, 1.2, -1.77), color: "#EF4444" },
+            { text: "POSTAZIONE UNGHIE", pos: new THREE.Vector3(-0.05, 1.0, 0.95), color: "#F59E0B" },
+            { text: "RECEPTION ORIZZONTALE (A Dx)", pos: new THREE.Vector3(1.15, 1.4, -0.15), color: "#8B5CF6" },
+            { text: "CABINA (Dietro Reception)", pos: new THREE.Vector3(1.10, 1.4, -1.25), color: "#10B981" }
         ];
 
         const overlay = document.getElementById('labels-overlay');
@@ -330,18 +329,18 @@
             document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
 
-            if (v === 'front_iso') {
-                camera.position.set(0, 5.5, -5.5);
-                controls.target.set(0, 0.5, 0.2);
+            if (v === 'front') {
+                camera.position.set(0, 5.5, 5.5);
+                controls.target.set(0, 0.5, -0.2);
             } else if (v === 'top') {
                 camera.position.set(0, 8.2, 0.0001);
                 controls.target.set(0, 0, 0);
             } else if (v === 'entrance') {
-                camera.position.set(1.1, 1.5, -2.6);
-                controls.target.set(-0.2, 0.9, 0.5);
+                camera.position.set(1.1, 1.5, 2.6);
+                controls.target.set(-0.2, 0.9, -0.5);
             } else if (v === 'scale') {
-                camera.position.set(-0.8, 3.2, -1.8);
-                controls.target.set(-1.2, 0.2, 0.8);
+                camera.position.set(-0.8, 3.2, 1.8);
+                controls.target.set(-1.2, 0.2, -0.8);
             }
             controls.update();
         }
@@ -353,8 +352,8 @@
             });
         }
 
-        camera.position.set(0, 5.5, -5.5);
-        controls.target.set(0, 0.5, 0.2);
+        camera.position.set(0, 5.5, 5.5);
+        controls.target.set(0, 0.5, -0.2);
         controls.update();
 
         window.addEventListener('resize', () => {
