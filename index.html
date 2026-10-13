@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urban Longevity Lab - Modello 3D Ufficiale</title>
+    <title>Urban Longevity Lab - Pianta Esatta 3D</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             overflow: hidden;
-            background: #0F172A;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #0B0F17;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #F8FAFC;
             user-select: none;
             -webkit-user-select: none;
@@ -23,25 +23,24 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(15, 23, 42, 0.90);
-            backdrop-filter: blur(20px);
-            padding: 20px 24px;
-            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            padding: 18px 22px;
+            border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            max-width: 360px;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+            max-width: 350px;
             z-index: 100;
         }
         h1 {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             color: #F8FAFC;
             margin-bottom: 2px;
-            letter-spacing: 0.3px;
         }
         .dim-badge {
             display: inline-block;
-            background: rgba(14, 165, 233, 0.2);
+            background: rgba(14, 165, 233, 0.18);
             color: #38BDF8;
             font-size: 11px;
             font-weight: 700;
@@ -65,7 +64,7 @@
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
         button:hover {
             background: #334155;
@@ -99,13 +98,13 @@
         }
         .tag-3d {
             position: absolute;
-            background: rgba(15, 23, 42, 0.88);
+            background: rgba(15, 23, 42, 0.90);
             color: #F8FAFC;
-            padding: 5px 10px;
+            padding: 4px 9px;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 700;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.22);
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             transform: translate(-50%, -50%);
             white-space: nowrap;
@@ -113,34 +112,28 @@
             align-items: center;
             gap: 6px;
             pointer-events: auto;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-        }
-        .tag-3d:hover {
-            transform: translate(-50%, -50%) scale(1.08);
-            border-color: #F59E0B;
         }
         .tag-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
-        #info-box {
+        #compass {
             position: absolute;
             bottom: 20px;
-            left: 20px;
+            right: 20px;
             background: rgba(15, 23, 42, 0.90);
-            backdrop-filter: blur(16px);
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            font-size: 11.5px;
-            max-width: 380px;
-            color: #CBD5E1;
-            line-height: 1.4;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            font-size: 11px;
+            font-weight: 700;
+            color: #94A3B8;
+            display: flex;
+            gap: 14px;
             z-index: 100;
         }
-        #info-box b { color: #F59E0B; }
+        #compass span b { color: #38BDF8; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -148,21 +141,20 @@
 <body>
     <div id="control-panel">
         <h1>URBAN LONGEVITY LAB</h1>
-        <div class="dim-badge">PROPORZIONI REALI: 3,50 m x 4,00 m</div>
+        <div class="dim-badge">3,50 m (Fondo) x 4,00 m (Lato)</div>
         <div class="btn-group">
-            <button onclick="changeView('iso')" class="active">Assonometria 3D</button>
+            <button onclick="changeView('front_iso')" class="active">Vista Frontale 3D</button>
             <button onclick="changeView('top')">Pianta 2D Alto</button>
-            <button onclick="changeView('front')">Vista Vetrina</button>
-            <button onclick="changeView('scale')">Dettaglio Scale</button>
+            <button onclick="changeView('entrance')">Dall'Ingresso</button>
+            <button onclick="changeView('scale')">Vista Scala</button>
         </div>
-        <button class="action-btn" onclick="toggleCutaway()">Mostra / Nascondi Muri Alti</button>
+        <button class="action-btn" onclick="toggleCutaway()">Muri Pieni / Aperti</button>
     </div>
 
-    <div id="info-box">
-        <b>Schema Conforme al Disegno:</b><br>
-        • <b>Sinistra:</b> Bagno in basso, Antibagno con porta scorrevole, Scala a rampa con accesso in cima.<br>
-        • <b>Centro:</b> Tavolo Unghie verticale con 2 sedie ai lati.<br>
-        • <b>Destra:</b> Reception a parete e Cabina trattamenti con lettino e lavabo.
+    <div id="compass">
+        <span>SINISTRA: <b>Scale + Bagno</b></span>
+        <span>CENTRO: <b>Unghie</b></span>
+        <span>DESTRA: <b>Porta + Reception + Cabina</b></span>
     </div>
 
     <div id="labels-overlay"></div>
@@ -183,15 +175,15 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.06;
-        controls.maxPolarAngle = Math.PI / 2.05;
+        controls.maxPolarAngle = Math.PI / 2.02;
         controls.minDistance = 2;
         controls.maxDistance = 18;
 
-        const ambLight = new THREE.AmbientLight(0xFFFBF2, 0.85);
+        const ambLight = new THREE.AmbientLight(0xFFFBF2, 0.9);
         scene.add(ambLight);
 
-        const sun = new THREE.DirectionalLight(0xFFF3D6, 1.4);
-        sun.position.set(5, 12, -6);
+        const sun = new THREE.DirectionalLight(0xFFF3D6, 1.3);
+        sun.position.set(-4, 12, -8);
         sun.castShadow = true;
         sun.shadow.mapSize.width = 2048;
         sun.shadow.mapSize.height = 2048;
@@ -232,10 +224,10 @@
         const H_FULL = 2.7;
         const H_CUT = 0.85;
 
-        // Pavimento continuo (3,5m x 4,0m)
+        // Pavimento (3,5m x 4,0m)
         addBox(W, 0.08, D, matFloor, 0, -0.04, 0);
 
-        // Muri perimetrali
+        // Pareti di fondo e perimetrali
         addBox(W, H_FULL, 0.12, matWallHigh, 0, H_FULL/2, 2.0, 0, 0, 0, true);
         addBox(0.12, H_FULL, D, matWallHigh, -1.75, H_FULL/2, 0, 0, 0, 0, true);
         addBox(0.12, H_CUT, D, matWallLow, 1.75, H_CUT/2, 0);
@@ -244,27 +236,28 @@
         addBox(1.05, H_CUT, 0.1, matWallLow, -1.22, H_CUT/2, -2.0);
         addBox(1.4, 0.08, 0.08, matMetal, 0, 0.04, -2.0);
         addBox(1.4, 2.4, 0.03, matGlass, 0, 1.24, -2.0);
+        // Porta ingresso a DESTRA
         addBox(0.95, 2.4, 0.04, matGlass, 1.2, 1.24, -1.7, 0, -0.45, 0);
         addBox(0.04, 2.4, 0.06, matMetal, 1.2, 1.24, -1.7, 0, -0.45, 0);
 
         // Blocco Sinistro: Bagno, Antibagno e Scala
         const leftSepX = -0.70;
 
-        // Bagno
+        // Bagno in basso a sinistra
         addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, -1.15);
         addBox(0.08, H_CUT, 0.85, matWallLow, leftSepX, H_CUT/2, -1.57);
         addBox(0.38, 0.40, 0.48, matCushion, -1.22, 0.20, -1.65);
 
-        // Antibagno con Porta Scorrevole
+        // Antibagno con porta scorrevole
         addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, -0.35);
         addBox(0.08, H_CUT, 0.25, matWallLow, leftSepX, H_CUT/2, -0.47);
         addBox(0.03, 0.05, 1.0, matMetal, leftSepX + 0.05, 2.1, -0.85);
         addBox(0.04, 2.05, 0.75, matWoodOak, leftSepX + 0.05, 1.05, -0.90);
         addBox(0.02, 0.25, 0.03, matMetal, leftSepX + 0.08, 1.05, -0.65);
-        addBox(0.50, 0.06, 0.38, matWoodOak, -1.22, 0.85, -0.75);
-        addBox(0.36, 0.14, 0.28, matCushion, -1.22, 0.95, -0.75);
+        addBox(0.48, 0.06, 0.36, matWoodOak, -1.22, 0.85, -0.75);
+        addBox(0.34, 0.14, 0.26, matCushion, -1.22, 0.95, -0.75);
 
-        // Scala a rampa dritta (Scende dall'alto verso il centro)
+        // Scala a SINISTRA sopra l'antibagno (Accesso in alto a quota Z=+2.0, scende a Z=-0.35)
         const nSteps = 11;
         const stepLen = 1.90 / nSteps;
         for (let i = 0; i < nSteps; i++) {
@@ -275,37 +268,37 @@
         addBox(0.95, 0.10, 0.45, matFloor, -1.22, 0, 1.77);
         addBox(0.04, 0.95, 2.0, matMetal, leftSepX, 0.47, 0.65);
 
-        // Postazione Unghie (Verticale con 2 sedie ai lati)
-        addBox(0.60, 0.76, 1.20, matWoodOak, -0.05, 0.38, -0.85);
-        addBox(0.18, 0.005, 0.22, matMetal, -0.05, 0.765, -0.85);
-        addBox(0.40, 0.75, 0.40, matCushion, -0.48, 0.38, -0.85);
-        addBox(0.40, 0.75, 0.40, matCushion, +0.38, 0.38, -0.85);
+        // Postazione unghie centrale compatta
+        addBox(0.45, 0.75, 0.85, matWoodOak, -0.05, 0.375, -0.95);
+        addBox(0.14, 0.005, 0.18, matMetal, -0.05, 0.755, -0.95);
+        addBox(0.32, 0.70, 0.32, matCushion, -0.42, 0.35, -0.95);
+        addBox(0.32, 0.70, 0.32, matCushion, +0.32, 0.35, -0.95);
 
-        // Reception a parete destra
-        addBox(0.50, 1.05, 1.05, matWoodOak, 1.45, 0.52, 0.15);
-        addBox(0.54, 0.04, 1.09, matWoodDark, 1.45, 1.07, 0.15);
-        addBox(0.20, 0.16, 0.12, matMetal, 1.45, 1.18, 0.15, 0, -0.4, 0);
+        // Reception ORIZZONTALE a parete destra
+        addBox(1.05, 1.05, 0.45, matWoodOak, 1.15, 0.525, 0.15);
+        addBox(1.09, 0.04, 0.49, matWoodDark, 1.15, 1.07, 0.15);
+        addBox(0.18, 0.14, 0.12, matMetal, 1.15, 1.18, 0.15, 0, 0, 0);
 
-        // Cabina Trattamenti chiusa (In alto a destra)
+        // Cabina Trattamenti in alto a destra DIETRO LA RECEPTION
         const cabSepX = -0.05;
-        const cabFrontZ = 0.55;
-        addBox(0.08, H_CUT, 1.45, matWallLow, cabSepX, H_CUT/2, 1.27);
+        const cabFrontZ = 0.65;
+        addBox(0.08, H_CUT, 1.35, matWallLow, cabSepX, H_CUT/2, 1.32);
         addBox(1.80, H_CUT, 0.08, matWallLow, 0.85, H_CUT/2, cabFrontZ);
-        addBox(0.70, 2.15, 0.04, matWoodOak, 0.45, 1.08, 0.80, 0, 0.75, 0);
-        addBox(0.70, 0.35, 1.70, matWoodDark, 1.05, 0.18, 1.15);
-        addBox(0.75, 0.30, 1.75, matCushion, 1.05, 0.45, 1.15);
-        addBox(0.45, 0.05, 0.35, matWoodOak, cabSepX + 0.35, 0.82, 0.85);
-        addBox(0.32, 0.12, 0.25, matCushion, cabSepX + 0.35, 0.90, 0.85);
+        addBox(0.65, 2.15, 0.04, matWoodOak, 0.40, 1.08, 0.85, 0, 0.75, 0);
+        addBox(0.68, 0.35, 1.60, matWoodDark, 1.10, 0.18, 1.25);
+        addBox(0.72, 0.30, 1.65, matCushion, 1.10, 0.45, 1.25);
+        addBox(0.40, 0.05, 0.32, matWoodOak, cabSepX + 0.32, 0.82, 0.90);
+        addBox(0.28, 0.12, 0.22, matCushion, cabSepX + 0.32, 0.90, 0.90);
 
-        // Etichette fluttuanti nello spazio 3D
+        // Etichette fluttuanti 3D
         const tagsData = [
-            { text: "INGRESSO VETRINA", pos: new THREE.Vector3(1.2, 1.8, -1.9), color: "#10B981" },
-            { text: "BAGNO", pos: new THREE.Vector3(-1.22, 1.0, -1.65), color: "#38BDF8" },
-            { text: "ANTIBAGNO (Porta Scorrevole)", pos: new THREE.Vector3(-1.22, 1.5, -0.75), color: "#F59E0B" },
-            { text: "ACCESSO SCALA (Scende a S1)", pos: new THREE.Vector3(-1.22, 1.2, 1.77), color: "#EF4444" },
-            { text: "POSTAZIONE UNGHIE", pos: new THREE.Vector3(-0.05, 1.1, -0.85), color: "#F59E0B" },
-            { text: "RECEPTION (Parete Dx)", pos: new THREE.Vector3(1.45, 1.4, 0.15), color: "#8B5CF6" },
-            { text: "CABINA (Lettino & Lavabo)", pos: new THREE.Vector3(1.05, 1.4, 1.15), color: "#10B981" }
+            { text: "INGRESSO A DESTRA", pos: new THREE.Vector3(1.2, 1.8, -1.9), color: "#10B981" },
+            { text: "BAGNO (In Basso a Sx)", pos: new THREE.Vector3(-1.22, 0.9, -1.65), color: "#38BDF8" },
+            { text: "ANTIBAGNO (Porta Scorrevole)", pos: new THREE.Vector3(-1.22, 1.4, -0.75), color: "#F59E0B" },
+            { text: "ACCESSO SCALA (In Alto a Sx)", pos: new THREE.Vector3(-1.22, 1.2, 1.77), color: "#EF4444" },
+            { text: "UNGHIE COMPATTO", pos: new THREE.Vector3(-0.05, 1.0, -0.95), color: "#F59E0B" },
+            { text: "RECEPTION ORIZZONTALE", pos: new THREE.Vector3(1.15, 1.4, 0.15), color: "#8B5CF6" },
+            { text: "CABINA (Dietro Reception)", pos: new THREE.Vector3(1.10, 1.4, 1.25), color: "#10B981" }
         ];
 
         const overlay = document.getElementById('labels-overlay');
@@ -337,18 +330,18 @@
             document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
 
-            if (v === 'iso') {
-                camera.position.set(5.5, 6.0, -5.0);
-                controls.target.set(0, 0.6, 0);
+            if (v === 'front_iso') {
+                camera.position.set(0, 5.5, -5.5);
+                controls.target.set(0, 0.5, 0.2);
             } else if (v === 'top') {
-                camera.position.set(0.001, 8.5, 0.001);
+                camera.position.set(0, 8.2, 0.0001);
                 controls.target.set(0, 0, 0);
-            } else if (v === 'front') {
-                camera.position.set(0, 1.5, -4.5);
-                controls.target.set(0, 1.0, 0);
+            } else if (v === 'entrance') {
+                camera.position.set(1.1, 1.5, -2.6);
+                controls.target.set(-0.2, 0.9, 0.5);
             } else if (v === 'scale') {
-                camera.position.set(-1.0, 3.0, 3.5);
-                controls.target.set(-1.2, 0.2, 0.5);
+                camera.position.set(-0.8, 3.2, -1.8);
+                controls.target.set(-1.2, 0.2, 0.8);
             }
             controls.update();
         }
@@ -360,8 +353,8 @@
             });
         }
 
-        camera.position.set(5.5, 5.8, -4.8);
-        controls.target.set(0, 0.6, 0);
+        camera.position.set(0, 5.5, -5.5);
+        controls.target.set(0, 0.5, 0.2);
         controls.update();
 
         window.addEventListener('resize', () => {
