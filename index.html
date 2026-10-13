@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urban Longevity Lab - Tour 3D Reale (Via dei Crispolti 26)</title>
+    <title>Urban Longevity Lab - Modello 3D Ufficiale</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             overflow: hidden;
-            background: #111418;
+            background: #0F172A;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #E2E8F0;
+            color: #F8FAFC;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -19,130 +19,160 @@
             height: 100vh;
             display: block;
         }
-        #ui-panel {
+        #control-panel {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(18, 22, 28, 0.88);
-            backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.90);
+            backdrop-filter: blur(20px);
             padding: 20px 24px;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             max-width: 360px;
-            z-index: 10;
+            z-index: 100;
         }
         h1 {
             font-size: 17px;
             font-weight: 700;
-            color: #F3EFE6;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
+            color: #F8FAFC;
+            margin-bottom: 2px;
+            letter-spacing: 0.3px;
         }
-        .subtitle {
-            font-size: 11.5px;
-            color: #94A3B8;
-            margin-bottom: 14px;
-            line-height: 1.4;
+        .dim-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.2);
+            color: #38BDF8;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(14, 165, 233, 0.35);
         }
-        .btn-grid {
+        .btn-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         button {
-            background: #252D3A;
-            color: #CBD5E1;
-            border: 1px solid rgba(255,255,255,0.08);
+            background: #1E293B;
+            color: #E2E8F0;
+            border: 1px solid rgba(255,255,255,0.1);
             padding: 9px 12px;
-            border-radius: 9px;
+            border-radius: 8px;
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         button:hover {
-            background: #3B4758;
+            background: #334155;
             color: #FFFFFF;
-            transform: translateY(-1px);
         }
         button.active {
-            background: #C4A47C;
-            color: #111827;
-            border-color: #C4A47C;
-            font-weight: 700;
+            background: #D97706;
+            color: #FFFFFF;
+            border-color: #F59E0B;
         }
-        .toggle-roof-btn {
+        .action-btn {
             width: 100%;
-            background: rgba(196, 164, 124, 0.15);
-            color: #C4A47C;
-            border: 1px solid rgba(196, 164, 124, 0.4);
+            background: rgba(217, 119, 6, 0.18);
+            color: #FBBF24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
             margin-top: 4px;
         }
-        .toggle-roof-btn:hover {
-            background: rgba(196, 164, 124, 0.28);
-            color: #F3EFE6;
+        .action-btn:hover {
+            background: rgba(217, 119, 6, 0.35);
+            color: #FFFFFF;
         }
-        #palette-legend {
+        #labels-overlay {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(18, 22, 28, 0.88);
-            backdrop-filter: blur(16px);
-            padding: 14px 18px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            font-size: 11px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 10;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 50;
         }
-        .pal-item {
+        .tag-3d {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.88);
+            color: #F8FAFC;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: transform 0.15s ease;
         }
-        .pal-dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 3px;
+        .tag-3d:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            border-color: #F59E0B;
         }
+        .tag-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        #info-box {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.90);
+            backdrop-filter: blur(16px);
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 11.5px;
+            max-width: 380px;
+            color: #CBD5E1;
+            line-height: 1.4;
+            z-index: 100;
+        }
+        #info-box b { color: #F59E0B; }
     </style>
-    <!-- Three.js + OrbitControls -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <div id="ui-panel">
+    <div id="control-panel">
         <h1>URBAN LONGEVITY LAB</h1>
-        <div class="subtitle">Planimetria Esatta (3,5m x 4,0m) • Via dei Crispolti 26<br>Stile Quiet Luxury On-Budget</div>
-        <div class="btn-grid">
-            <button onclick="setView('iso')" class="active">Vista Assonometrica</button>
-            <button onclick="setView('top')">Vista Pianta 2D</button>
-            <button onclick="setView('entrance')">Ingresso / Vetrina</button>
-            <button onclick="setView('cabin')">Cabina Trattamenti</button>
+        <div class="dim-badge">PROPORZIONI REALI: 3,50 m x 4,00 m</div>
+        <div class="btn-group">
+            <button onclick="changeView('iso')" class="active">Assonometria 3D</button>
+            <button onclick="changeView('top')">Pianta 2D Alto</button>
+            <button onclick="changeView('front')">Vista Vetrina</button>
+            <button onclick="changeView('scale')">Dettaglio Scale</button>
         </div>
-        <button class="toggle-roof-btn" onclick="toggleTransparentWalls()">Alterna Muri Trasparenti / Pieni</button>
+        <button class="action-btn" onclick="toggleCutaway()">Mostra / Nascondi Muri Alti</button>
     </div>
 
-    <div id="palette-legend">
-        <div class="pal-item"><div class="pal-dot" style="background:#E3DDD3;"></div>Microcemento Calce Greige</div>
-        <div class="pal-item"><div class="pal-dot" style="background:#C4A47C;"></div>Rovere Naturale Nordico</div>
-        <div class="pal-item"><div class="pal-dot" style="background:#2C3E50;"></div>Metallo Canna di Fucile / Tech</div>
-        <div class="pal-item"><div class="pal-dot" style="background:#F5F2EB;"></div>Bouclé Avorio & Lino Naturale</div>
+    <div id="info-box">
+        <b>Schema Conforme al Disegno:</b><br>
+        • <b>Sinistra:</b> Bagno in basso, Antibagno con porta scorrevole, Scala a rampa con accesso in cima.<br>
+        • <b>Centro:</b> Tavolo Unghie verticale con 2 sedie ai lati.<br>
+        • <b>Destra:</b> Reception a parete e Cabina trattamenti con lettino e lavabo.
     </div>
 
+    <div id="labels-overlay"></div>
     <div id="canvas-container"></div>
 
     <script>
-        // --- 1. SETUP SCENA & RENDERER ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0E1116);
-        scene.fog = new THREE.FogExp2(0x0E1116, 0.025);
+        scene.background = new THREE.Color(0x0B0F17);
 
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -152,191 +182,186 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
+        controls.dampingFactor = 0.06;
         controls.maxPolarAngle = Math.PI / 2.05;
         controls.minDistance = 2;
-        controls.maxDistance = 20;
+        controls.maxDistance = 18;
 
-        // --- 2. LUCI ARCHITETTURALI ---
-        const ambLight = new THREE.AmbientLight(0xFFFBF5, 0.85);
+        const ambLight = new THREE.AmbientLight(0xFFFBF2, 0.85);
         scene.add(ambLight);
 
-        const dirLight = new THREE.DirectionalLight(0xFFF3E0, 1.3);
-        dirLight.position.set(6, 10, -5);
-        dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 2048;
-        dirLight.shadow.mapSize.height = 2048;
-        dirLight.shadow.bias = -0.0005;
-        scene.add(dirLight);
+        const sun = new THREE.DirectionalLight(0xFFF3D6, 1.4);
+        sun.position.set(5, 12, -6);
+        sun.castShadow = true;
+        sun.shadow.mapSize.width = 2048;
+        sun.shadow.mapSize.height = 2048;
+        sun.shadow.bias = -0.0004;
+        scene.add(sun);
 
-        const warmSpot = new THREE.PointLight(0xFFD8A8, 0.8, 8);
-        warmSpot.position.set(0, 2.5, 0);
-        scene.add(warmSpot);
+        const softLight = new THREE.PointLight(0xFFD8A8, 0.7, 8);
+        softLight.position.set(0, 2.5, 0);
+        scene.add(softLight);
 
-        // --- 3. MATERIALI ---
-        const matFloor = new THREE.MeshStandardMaterial({ color: 0xE3DDD3, roughness: 0.65, metalness: 0.05 });
-        const matWallOpaque = new THREE.MeshStandardMaterial({ color: 0xECE6DC, roughness: 0.9 });
-        let wallsTransparent = true;
-        const matWallCut = new THREE.MeshStandardMaterial({ 
-            color: 0xECE6DC, 
-            roughness: 0.85, 
-            transparent: true, 
-            opacity: 0.45 
-        });
-        const matGlass = new THREE.MeshPhysicalMaterial({ color: 0xD0E0E3, transparent: true, opacity: 0.35, roughness: 0.1, transmission: 0.85 });
-        const matWood = new THREE.MeshStandardMaterial({ color: 0xC4A47C, roughness: 0.5, metalness: 0.05 });
+        const matFloor = new THREE.MeshStandardMaterial({ color: 0xE2DDD5, roughness: 0.6, metalness: 0.05 });
+        const matWallHigh = new THREE.MeshStandardMaterial({ color: 0xECE6DC, roughness: 0.9 });
+        const matWallLow = new THREE.MeshStandardMaterial({ color: 0xDDD5C7, roughness: 0.85 });
+        const matGlass = new THREE.MeshPhysicalMaterial({ color: 0xD0E2EC, transparent: true, opacity: 0.35, roughness: 0.1, transmission: 0.9 });
+        const matWoodOak = new THREE.MeshStandardMaterial({ color: 0xC4A47C, roughness: 0.5, metalness: 0.05 });
         const matWoodDark = new THREE.MeshStandardMaterial({ color: 0x8C6D46, roughness: 0.6 });
-        const matMetal = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.35, metalness: 0.8 });
-        const matBoucle = new THREE.MeshStandardMaterial({ color: 0xF5F2EB, roughness: 0.95 });
-        const matMirror = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.05, metalness: 0.95 });
+        const matMetal = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.35, metalness: 0.8 });
+        const matCushion = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.95 });
+        const matStep = new THREE.MeshStandardMaterial({ color: 0xCBD5E1, roughness: 0.7 });
 
-        const wallMeshes = [];
+        let cutaway = true;
+        const wallsHighMeshes = [];
 
-        function createBox(w, h, d, mat, x, y, z, rx=0, ry=0, rz=0, isWall=false) {
-            const geom = new THREE.BoxGeometry(w, h, d);
-            const mesh = new THREE.Mesh(geom, mat);
+        function addBox(w, h, d, mat, x, y, z, rx=0, ry=0, rz=0, isHighWall=false) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mesh = new THREE.Mesh(geo, mat);
             mesh.position.set(x, y, z);
             mesh.rotation.set(rx, ry, rz);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             scene.add(mesh);
-            if (isWall) wallMeshes.push(mesh);
+            if (isHighWall) wallsHighMeshes.push(mesh);
             return mesh;
         }
 
-        // --- 4. GEOMETRIA REALE (3,5m x 4,0m) ---
         const W = 3.5;
-        const D = 4.2;
-        const H = 2.8;
-        const leftX = -W / 2;    // -1.75
-        const rightX = W / 2;    // +1.75
-        const frontZ = -D / 2;   // -2.1
-        const backZ = D / 2;     // +2.1
+        const D = 4.0;
+        const H_FULL = 2.7;
+        const H_CUT = 0.85;
 
-        // Pavimento continuo in microcemento
-        createBox(W, 0.08, D, matFloor, 0, -0.04, 0);
+        // Pavimento continuo (3,5m x 4,0m)
+        addBox(W, 0.08, D, matFloor, 0, -0.04, 0);
 
-        // Pareti perimetrali d'involucro
-        createBox(W, H, 0.1, matWallOpaque, 0, H/2, backZ, 0, 0, 0, true);
-        createBox(0.1, H, D, matWallOpaque, leftX, H/2, 0, 0, 0, 0, true);
-        createBox(0.1, H, D, matWallCut, rightX, H/2, 0, 0, 0, 0, true);
+        // Muri perimetrali
+        addBox(W, H_FULL, 0.12, matWallHigh, 0, H_FULL/2, 2.0, 0, 0, 0, true);
+        addBox(0.12, H_FULL, D, matWallHigh, -1.75, H_FULL/2, 0, 0, 0, 0, true);
+        addBox(0.12, H_CUT, D, matWallLow, 1.75, H_CUT/2, 0);
 
-        // Fronte strada (Z = -2.1):
-        // Muro cieco dietro al bagno
-        createBox(1.1, H, 0.1, matWallOpaque, leftX + 0.55, H/2, frontZ, 0, 0, 0, true);
-        // Vetrina centrale
-        createBox(1.3, 0.08, 0.08, matMetal, 0.05, 0.04, frontZ);
-        createBox(1.3, H - 0.1, 0.03, matGlass, 0.05, H/2, frontZ);
-        // Porta ingresso a battente (in basso a destra come da schizzo)
-        createBox(0.95, H - 0.1, 0.04, matGlass, 1.2, H/2, frontZ + 0.35, 0, -0.4, 0);
-        createBox(0.04, H - 0.1, 0.06, matMetal, 1.2, H/2, frontZ + 0.35, 0, -0.4, 0);
+        // Fronte strada
+        addBox(1.05, H_CUT, 0.1, matWallLow, -1.22, H_CUT/2, -2.0);
+        addBox(1.4, 0.08, 0.08, matMetal, 0, 0.04, -2.0);
+        addBox(1.4, 2.4, 0.03, matGlass, 0, 1.24, -2.0);
+        addBox(0.95, 2.4, 0.04, matGlass, 1.2, 1.24, -1.7, 0, -0.45, 0);
+        addBox(0.04, 2.4, 0.06, matMetal, 1.2, 1.24, -1.7, 0, -0.45, 0);
 
-        // --- 5. LATO SINISTRO (BAGNO, ANTIBAGNO E SCALA) ---
-        const leftBlockW = 1.1;
-        const colSepX = leftX + leftBlockW;
+        // Blocco Sinistro: Bagno, Antibagno e Scala
+        const leftSepX = -0.70;
 
-        // 5.1 BAGNO (In basso a sinistra, Z da -2.1 a -1.1)
-        createBox(leftBlockW, H, 0.08, matWallOpaque, leftX + leftBlockW/2, H/2, frontZ + 1.0, 0, 0, 0, true);
-        createBox(0.38, 0.42, 0.5, matBoucle, leftX + 0.55, 0.21, frontZ + 0.4);
+        // Bagno
+        addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, -1.15);
+        addBox(0.08, H_CUT, 0.85, matWallLow, leftSepX, H_CUT/2, -1.57);
+        addBox(0.38, 0.40, 0.48, matCushion, -1.22, 0.20, -1.65);
 
-        // 5.2 ANTIBAGNO CON PORTA SCORREVOLE (Subito sopra il bagno, Z da -1.1 a -0.1)
-        createBox(0.08, H, 1.0, matWallOpaque, colSepX, H/2, frontZ + 0.5, 0, 0, 0, true);
-        createBox(0.08, H, 0.3, matWallOpaque, colSepX, H/2, frontZ + 1.85, 0, 0, 0, true);
-        
-        // Porta scorrevole esterna in rovere con binario canna di fucile
-        createBox(0.04, 0.06, 1.2, matMetal, colSepX + 0.05, 2.25, frontZ + 1.2);
-        createBox(0.04, 2.15, 0.8, matWood, colSepX + 0.05, 1.08, frontZ + 1.15);
-        createBox(0.02, 0.3, 0.03, matMetal, colSepX + 0.08, 1.1, frontZ + 1.45);
+        // Antibagno con Porta Scorrevole
+        addBox(1.05, H_CUT, 0.08, matWallLow, -1.22, H_CUT/2, -0.35);
+        addBox(0.08, H_CUT, 0.25, matWallLow, leftSepX, H_CUT/2, -0.47);
+        addBox(0.03, 0.05, 1.0, matMetal, leftSepX + 0.05, 2.1, -0.85);
+        addBox(0.04, 2.05, 0.75, matWoodOak, leftSepX + 0.05, 1.05, -0.90);
+        addBox(0.02, 0.25, 0.03, matMetal, leftSepX + 0.08, 1.05, -0.65);
+        addBox(0.50, 0.06, 0.38, matWoodOak, -1.22, 0.85, -0.75);
+        addBox(0.36, 0.14, 0.28, matCushion, -1.22, 0.95, -0.75);
 
-        // Interno antibagno: mobile lavabo e specchio tondo
-        createBox(0.55, 0.06, 0.4, matWood, leftX + 0.55, 0.85, frontZ + 1.6);
-        createBox(0.38, 0.14, 0.3, matBoucle, leftX + 0.55, 0.95, frontZ + 1.6);
-        createBox(0.02, 0.65, 0.65, matMirror, leftX + 0.55, 1.55, frontZ + 1.3);
-
-        // 5.3 SCALA PER SEMINTERRATO (In alto a sinistra)
-        createBox(leftBlockW, H, 0.08, matWallOpaque, leftX + leftBlockW/2, H/2, frontZ + 2.0, 0, 0, 0, true);
-
-        // Gradini che scendono dall'alto (partenza a Z=+2.1) verso il centro (Z=-0.1)
-        const nSteps = 10;
-        const stepLen = 2.1 / nSteps;
+        // Scala a rampa dritta (Scende dall'alto verso il centro)
+        const nSteps = 11;
+        const stepLen = 1.90 / nSteps;
         for (let i = 0; i < nSteps; i++) {
-            const stepZ = backZ - 0.2 - (i * stepLen);
+            const stepZ = 1.55 - (i * stepLen);
             const stepY = - (i * 0.14);
-            createBox(leftBlockW - 0.05, 0.14, stepLen, matFloor, leftX + leftBlockW/2, stepY, stepZ);
+            addBox(0.95, 0.14, stepLen, matStep, -1.22, stepY, stepZ);
         }
-        createBox(0.04, 0.95, 2.1, matMetal, colSepX, 0.47, backZ - 1.1);
+        addBox(0.95, 0.10, 0.45, matFloor, -1.22, 0, 1.77);
+        addBox(0.04, 0.95, 2.0, matMetal, leftSepX, 0.47, 0.65);
 
-        // --- 6. CENTRO E LATO DESTRO ---
+        // Postazione Unghie (Verticale con 2 sedie ai lati)
+        addBox(0.60, 0.76, 1.20, matWoodOak, -0.05, 0.38, -0.85);
+        addBox(0.18, 0.005, 0.22, matMetal, -0.05, 0.765, -0.85);
+        addBox(0.40, 0.75, 0.40, matCushion, -0.48, 0.38, -0.85);
+        addBox(0.40, 0.75, 0.40, matCushion, +0.38, 0.38, -0.85);
 
-        // 6.1 TAVOLO UNGHIE VERTICALE (Con 2 sedute: a sinistra e a destra)
-        createBox(0.65, 0.76, 1.3, matWood, -0.05, 0.38, frontZ + 1.45);
-        createBox(0.18, 0.005, 0.25, matMetal, -0.05, 0.765, frontZ + 1.45);
-        createBox(0.42, 0.75, 0.42, matBoucle, -0.52, 0.38, frontZ + 1.45);
-        createBox(0.42, 0.75, 0.42, matBoucle, +0.42, 0.38, frontZ + 1.45);
+        // Reception a parete destra
+        addBox(0.50, 1.05, 1.05, matWoodOak, 1.45, 0.52, 0.15);
+        addBox(0.54, 0.04, 1.09, matWoodDark, 1.45, 1.07, 0.15);
+        addBox(0.20, 0.16, 0.12, matMetal, 1.45, 1.18, 0.15, 0, -0.4, 0);
 
-        // 6.2 RECEPTION A PARETE DESTRA
-        createBox(0.55, 1.05, 1.1, matWood, rightX - 0.32, 0.52, frontZ + 2.5);
-        createBox(0.59, 0.04, 1.14, matWoodDark, rightX - 0.32, 1.07, frontZ + 2.5);
-        createBox(0.2, 0.18, 0.14, matMetal, rightX - 0.32, 1.18, frontZ + 2.5, 0, -0.5, 0);
+        // Cabina Trattamenti chiusa (In alto a destra)
+        const cabSepX = -0.05;
+        const cabFrontZ = 0.55;
+        addBox(0.08, H_CUT, 1.45, matWallLow, cabSepX, H_CUT/2, 1.27);
+        addBox(1.80, H_CUT, 0.08, matWallLow, 0.85, H_CUT/2, cabFrontZ);
+        addBox(0.70, 2.15, 0.04, matWoodOak, 0.45, 1.08, 0.80, 0, 0.75, 0);
+        addBox(0.70, 0.35, 1.70, matWoodDark, 1.05, 0.18, 1.15);
+        addBox(0.75, 0.30, 1.75, matCushion, 1.05, 0.45, 1.15);
+        addBox(0.45, 0.05, 0.35, matWoodOak, cabSepX + 0.35, 0.82, 0.85);
+        addBox(0.32, 0.12, 0.25, matCushion, cabSepX + 0.35, 0.90, 0.85);
 
-        // 6.3 CABINA TRATTAMENTI CHIUSA (In alto a destra)
-        const cabLeftX = -0.1;
-        const cabFrontZ = frontZ + 2.7;
+        // Etichette fluttuanti nello spazio 3D
+        const tagsData = [
+            { text: "INGRESSO VETRINA", pos: new THREE.Vector3(1.2, 1.8, -1.9), color: "#10B981" },
+            { text: "BAGNO", pos: new THREE.Vector3(-1.22, 1.0, -1.65), color: "#38BDF8" },
+            { text: "ANTIBAGNO (Porta Scorrevole)", pos: new THREE.Vector3(-1.22, 1.5, -0.75), color: "#F59E0B" },
+            { text: "ACCESSO SCALA (Scende a S1)", pos: new THREE.Vector3(-1.22, 1.2, 1.77), color: "#EF4444" },
+            { text: "POSTAZIONE UNGHIE", pos: new THREE.Vector3(-0.05, 1.1, -0.85), color: "#F59E0B" },
+            { text: "RECEPTION (Parete Dx)", pos: new THREE.Vector3(1.45, 1.4, 0.15), color: "#8B5CF6" },
+            { text: "CABINA (Lettino & Lavabo)", pos: new THREE.Vector3(1.05, 1.4, 1.15), color: "#10B981" }
+        ];
 
-        createBox(0.08, H, D - 2.7, matWallOpaque, cabLeftX, H/2, (cabFrontZ + backZ)/2, 0, 0, 0, true);
-        createBox(rightX - cabLeftX, H, 0.08, matWallOpaque, (cabLeftX + rightX)/2, H/2, cabFrontZ, 0, 0, 0, true);
+        const overlay = document.getElementById('labels-overlay');
+        tagsData.forEach(t => {
+            const div = document.createElement('div');
+            div.className = 'tag-3d';
+            div.innerHTML = `<div class="tag-dot" style="background:${t.color};"></div>${t.text}`;
+            overlay.appendChild(div);
+            t.element = div;
+        });
 
-        // Porta della cabina ad apertura interna (in alto a sinistra della cabina)
-        createBox(0.75, 2.15, 0.04, matWood, cabLeftX + 0.4, 1.08, cabFrontZ + 0.3, 0, 0.8, 0);
-
-        // Arredo Cabina: Lettino verticale + Laser Diodo + Lavabo ASL
-        createBox(0.75, 0.35, 1.85, matWoodDark, rightX - 0.7, 0.18, backZ - 1.1);
-        createBox(0.8, 0.3, 1.9, matBoucle, rightX - 0.7, 0.46, backZ - 1.1);
-        createBox(0.45, 1.15, 0.45, matMetal, rightX - 0.35, 0.57, backZ - 0.35);
-        createBox(0.3, 0.2, 0.04, matWood, rightX - 0.35, 1.1, backZ - 0.35, -0.3, 0, 0);
-        createBox(0.5, 0.05, 0.38, matWood, cabLeftX + 0.35, 0.82, backZ - 0.35);
-        createBox(0.35, 0.14, 0.28, matBoucle, cabLeftX + 0.35, 0.92, backZ - 0.35);
-
-        // --- 7. ILLUMINAZIONE ARCHITETTURALE (Binari neri a soffitto) ---
-        createBox(0.04, 0.04, D - 0.8, matMetal, -0.6, 2.7, 0);
-        createBox(0.04, 0.04, D - 0.8, matMetal, +0.8, 2.7, 0);
-        for (let bz = -1.5; bz <= 1.5; bz += 1.0) {
-            createBox(0.06, 0.12, 0.06, matMetal, -0.6, 2.62, bz);
-            createBox(0.06, 0.12, 0.06, matMetal, +0.8, 2.62, bz);
-        }
-
-        // --- 8. VISTE DELLA CAMERA ---
-        function setView(v) {
-            document.querySelectorAll('.btn-grid button').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-
-            if (v === 'iso') {
-                camera.position.set(5.5, 6.5, -5.5);
-                controls.target.set(0, 0.8, 0);
-            } else if (v === 'top') {
-                camera.position.set(0.001, 9.5, 0);
-                controls.target.set(0, 0, 0);
-            } else if (v === 'entrance') {
-                camera.position.set(1.2, 1.6, -2.8);
-                controls.target.set(0, 1.1, 0.5);
-            } else if (v === 'cabin') {
-                camera.position.set(0.2, 1.7, 1.2);
-                controls.target.set(rightX - 0.7, 1.0, backZ - 1.1);
-            }
-            controls.update();
-        }
-
-        function toggleTransparentWalls() {
-            wallsTransparent = !wallsTransparent;
-            wallMeshes.forEach(m => {
-                if (m.material === matWallCut || m.material === matWallOpaque) {
-                    m.material = wallsTransparent ? matWallCut : matWallOpaque;
+        function updateLabels() {
+            tagsData.forEach(t => {
+                const p = t.pos.clone();
+                p.project(camera);
+                if (p.z > 1.0) {
+                    t.element.style.display = 'none';
+                } else {
+                    t.element.style.display = 'flex';
+                    const x = (p.x * 0.5 + 0.5) * window.innerWidth;
+                    const y = (-(p.y * 0.5) + 0.5) * window.innerHeight;
+                    t.element.style.left = `${x}px`;
+                    t.element.style.top = `${y}px`;
                 }
             });
         }
 
-        camera.position.set(5.5, 6.0, -5.5);
-        controls.target.set(0, 0.8, 0);
+        function changeView(v) {
+            document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (v === 'iso') {
+                camera.position.set(5.5, 6.0, -5.0);
+                controls.target.set(0, 0.6, 0);
+            } else if (v === 'top') {
+                camera.position.set(0.001, 8.5, 0.001);
+                controls.target.set(0, 0, 0);
+            } else if (v === 'front') {
+                camera.position.set(0, 1.5, -4.5);
+                controls.target.set(0, 1.0, 0);
+            } else if (v === 'scale') {
+                camera.position.set(-1.0, 3.0, 3.5);
+                controls.target.set(-1.2, 0.2, 0.5);
+            }
+            controls.update();
+        }
+
+        function toggleCutaway() {
+            cutaway = !cutaway;
+            wallsHighMeshes.forEach(m => {
+                m.visible = !cutaway;
+            });
+        }
+
+        camera.position.set(5.5, 5.8, -4.8);
+        controls.target.set(0, 0.6, 0);
         controls.update();
 
         window.addEventListener('resize', () => {
@@ -348,6 +373,7 @@
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
+            updateLabels();
             renderer.render(scene, camera);
         }
         animate();
